@@ -1,0 +1,40 @@
+﻿@model UserManagement.Web.Models.Users.UserListItemViewModel
+
+<input type="hidden" id="id" asp-for="Id" value="@Model.Id"/>
+
+<div class="mb-3">
+    <label for="forename" class="form-label">Forename</label>
+    <input id="forename" type="text" class="form-control" aria-labelledby="forename"
+           value="@Model.Forename" required
+           asp-for="Forename">
+    <div class="invalid-feedback">Surname cannot be blank.</div>
+</div>
+
+<div class="mb-3">
+    <label for="surname" class="form-label">Surname</label>
+    <input id="surname" type="text" class="form-control" aria-labelledby="surname"
+           value="@Model.Surname" required
+           asp-for="Surname">
+    <div class="invalid-feedback">Surname cannot be blank.</div>
+</div>
+
+<div class="mb-3">
+    <label for="email" class="form-label">Email</label>
+    <input id="email" type="email" class="form-control" aria-labelledby="email" value="@Model.Email" required
+           asp-for="Email">
+    <div class="invalid-feedback">Please enter a valid email address.</div>
+</div>
+
+<div class="mb-3">
+    <label for="dateOfBirth" class="form-label">Date Of Birth</label>
+    <input id="dateOfBirth" type="date" class="form-control" aria-labelledby="dateOfBirth"
+           value="@Model.DateOfBirth.ToString("O")"
+           required
+           asp-for="DateOfBirth">
+</div>
+
+<div class="mb-3">
+    <input id="isActive" type="checkbox" class="form-check-input" aria-labelledby="isActive" checked="@Model.IsActive"
+           asp-for="IsActive">
+    <label for="isActive" class="form-check-label">Active</label>
+</div>

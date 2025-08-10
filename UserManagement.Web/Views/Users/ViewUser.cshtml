@@ -1,0 +1,32 @@
+﻿@model UserManagement.Web.Models.Users.UserListItemViewModel
+
+<h2>User</h2>
+
+<div class="table-responsive">
+    <div>
+        <dl>
+            <dt>Id</dt>
+            <dd>@Model.Id</dd>
+
+            <dt>Forename</dt>
+            <dd>@Model.Forename</dd>
+
+            <dt>Surname</dt>
+            <dd>@Model.Surname</dd>
+
+            <dt>Email</dt>
+            <dd>@Model.Email</dd>
+
+            <dt>Date Of Birth</dt>
+            <dd>@Model.DateOfBirth</dd>
+
+            <dt>Active</dt>
+            <dd>@(Model.IsActive ? "Yes" : "No")</dd>
+        </dl>
+    </div>
+
+    <div>
+        <a class="btn btn-outline-secondary" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+        <a class="btn btn-outline-secondary" asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
+    </div>
+</div>

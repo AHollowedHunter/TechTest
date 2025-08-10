@@ -1,0 +1,29 @@
+﻿@model UserManagement.Web.Models.Users.UserListItemViewModel
+
+<h2>User Delete</h2>
+
+<div class="table-responsive">
+    <div>
+        <p>You are about to delete the following User:</p>
+        <dl>
+            <dt>Id</dt>
+            <dd>@Model.Id</dd>
+
+            <dt>Forename</dt>
+            <dd>@Model.Forename</dd>
+
+            <dt>Surname</dt>
+            <dd>@Model.Surname</dd>
+
+            <dt>Email</dt>
+            <dd>@Model.Email</dd>
+        </dl>
+    </div>
+
+    <div>
+        <a class="btn btn-outline-secondary" asp-action="ViewUser" asp-route-id="@Model.Id">Cancel</a>
+        <form class="d-inline" asp-controller="Users" asp-action="DeletePost" asp-route-id="@Model.Id" method="post">
+            <button type="submit" class="btn btn-outline-secondary">Confirm Delete</button>
+        </form>
+    </div>
+</div>

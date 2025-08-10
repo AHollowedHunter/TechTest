@@ -15,18 +15,89 @@ public class UsersController : Controller
     {
         var users = isActive is null ? _userService.GetAll() : _userService.FilterByActive(isActive.Value);
 
-        var items = users.Select(p => new UserListItemViewModel
-        {
-            Id       = p.Id,
-            Forename = p.Forename,
-            Surname  = p.Surname,
-            Email    = p.Email,
-            IsActive = p.IsActive,
-            DateOfBirth = p.DateOfBirth,
-        });
+        var items = users.Select(UserListItemViewModel.FromUser);
 
         var model = new UserListViewModel { Items = items.ToList() };
 
         return View(model);
     }
+
+    [HttpGet("{id:long}")]
+    public IActionResult ViewUser(long id)
+    {
+        if (_userService.GetById(id) is { } user)
+        {
+            return View(UserListItemViewModel.FromUser(user));
+        }
+
+        return NotFound();
+    }
+
+    [HttpGet("add")]
+    public IActionResult Add()
+    {
+        return View(new UserListItemViewModel());
+    }
+
+    [HttpPost("add")]
+    [ValidateAntiForgeryToken]
+    public IActionResult AddPost([FromForm] UserListItemViewModel model)
+    {
+        if (ModelState.IsValid is false)
+            return BadRequest();
+
+        var user = model.ToUser();
+
+        _userService.Create(user);
+
+        return RedirectToViewUser(user.Id);
+    }
+
+    [HttpGet("{id:long}/edit")]
+    public IActionResult Edit(long id)
+    {
+        if (_userService.GetById(id) is not { } user)
+            return NotFound();
+
+        return View(UserListItemViewModel.FromUser(user));
+    }
+
+    [HttpPost("edit")]
+    [ValidateAntiForgeryToken]
+    public IActionResult EditPost([FromForm] UserListItemViewModel model)
+    {
+        if (_userService.Exists(model.Id) is false)
+            return NotFound();
+
+        if (ModelState.IsValid is false)
+            return BadRequest();
+
+        var user = model.ToUser();
+
+        _userService.Edit(user);
+
+        return RedirectToViewUser(model.Id);
+    }
+
+    [HttpGet("{id:long}/delete")]
+    public IActionResult Delete(long id)
+    {
+        if (_userService.GetById(id) is not { } user)
+            return NotFound();
+
+        return View(UserListItemViewModel.FromUser(user));
+    }
+
+    [HttpPost("{id:long}/delete")]
+    [ValidateAntiForgeryToken]
+    public IActionResult DeletePost(long id)
+    {
+        if (_userService.GetById(id) is not { } user)
+            return NotFound();
+
+        _userService.Delete(user);
+        return RedirectToAction("List");
+    }
+
+    private RedirectToActionResult RedirectToViewUser(long id) => RedirectToAction("ViewUser", new { id });
 }
