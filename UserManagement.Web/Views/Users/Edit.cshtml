@@ -1,0 +1,12 @@
+﻿@model UserManagement.Web.Models.Users.UserListItemViewModel
+
+<h2>User Edit</h2>
+
+<div class="table-responsive">
+    <form asp-controller="Users" asp-action="EditPost" method="post">
+
+        <partial name="UserFormFields" model="Model"/>
+
+        <button type="submit" class="btn btn-primary">Save User</button>
+    </form>
+</div>

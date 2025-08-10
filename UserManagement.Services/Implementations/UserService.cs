@@ -21,4 +21,23 @@ public class UserService : IUserService
         => _dataAccess.GetAll<User>().Where(x => x.IsActive == isActive);
 
     public IEnumerable<User> GetAll() => _dataAccess.GetAll<User>();
+
+    public User? GetById(long id) => _dataAccess.Get<User>(id);
+
+    public bool Exists(long id) => _dataAccess.Exists<User>(id);
+
+    /// <inheritdoc />
+    public long Create(User user)
+    {
+        _dataAccess.Create(user);
+        return user.Id;
+    }
+
+    /// <inheritdoc />
+    public void Edit(User user)
+        => _dataAccess.Update(user);
+
+    /// <inheritdoc />
+    public void Delete(User user)
+        => _dataAccess.Delete(user);
 }
