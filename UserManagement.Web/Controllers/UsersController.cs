@@ -8,7 +8,13 @@ namespace UserManagement.WebMS.Controllers;
 public class UsersController : Controller
 {
     private readonly IUserService _userService;
-    public UsersController(IUserService userService) => _userService = userService;
+    private readonly IUserLogService _userLogService;
+
+    public UsersController(IUserService userService, IUserLogService userLogService)
+    {
+        _userService         = userService;
+        _userLogService = userLogService;
+    }
 
     [HttpGet]
     public ViewResult List(bool? isActive = null)
@@ -25,12 +31,13 @@ public class UsersController : Controller
     [HttpGet("{id:long}")]
     public IActionResult ViewUser(long id)
     {
-        if (_userService.GetById(id) is { } user)
-        {
-            return View(UserListItemViewModel.FromUser(user));
-        }
+        if (_userService.GetById(id) is not { } user)
+            return NotFound();
 
-        return NotFound();
+        var model = UserViewModel.FromUser(user);
+        model.Logs = _userLogService.GetForUser(id);
+        return View(model);
+
     }
 
     [HttpGet("add")]

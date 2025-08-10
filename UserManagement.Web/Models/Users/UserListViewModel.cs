@@ -47,3 +47,19 @@ public class UserListItemViewModel
             IsActive    = IsActive,
         };
 }
+
+public class UserViewModel : UserListItemViewModel
+{
+    public IEnumerable<UserLog> Logs { get; set; } = [];
+
+    public new static UserViewModel FromUser(User user)
+        => new()
+        {
+            Id          = user.Id,
+            Forename    = user.Forename,
+            Surname     = user.Surname,
+            Email       = user.Email,
+            IsActive    = user.IsActive,
+            DateOfBirth = user.DateOfBirth,
+        };
+}
