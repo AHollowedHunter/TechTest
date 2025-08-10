@@ -1,4 +1,4 @@
-﻿@model UserManagement.Web.Models.Users.UserListItemViewModel
+﻿@model UserManagement.Web.Models.Users.UserViewModel
 
 <h2>User</h2>
 
@@ -25,8 +25,54 @@
         </dl>
     </div>
 
-    <div>
+    <div class="mb-3">
         <a class="btn btn-outline-secondary" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
         <a class="btn btn-outline-secondary" asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
+    </div>
+
+    <div class="accordion" id="accordionLogs">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingLogs">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLogs"
+                        aria-expanded="true" aria-controls="collapseLogs">
+                    Audit Logs
+                </button>
+            </h2>
+            <div id="collapseLogs" class="accordion-collapse collapse" aria-labelledby="headingLogs"
+                 data-bs-parent="#accordionLogs">
+                <div class="accordion-body">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Timestamp</th>
+                            <th>User Id</th>
+                            <th>Log Type</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (var item in Model.Logs)
+                        {
+                            <tr>
+                                <td>
+                                    @item.Id
+                                </td>
+                                <td>
+                                    @item.Timestamp
+                                </td>
+                                <td>
+                                    @item.UserId
+                                </td>
+                                <td>
+                                    @item.LogType.ToString()
+                                </td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
