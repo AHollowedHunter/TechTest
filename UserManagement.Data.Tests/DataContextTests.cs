@@ -71,9 +71,7 @@ public class DataContextTests
     private DataContext CreateContext()
     {
         var context = new DataContext();
-        // Ensure the In-Memory database is cleared between tests.
-        context.Database.EnsureDeleted();
-        context.Database.EnsureCreated();
+        context.Database.Migrate();
         return context;
     }
 }

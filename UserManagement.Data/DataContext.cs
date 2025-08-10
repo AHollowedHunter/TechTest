@@ -8,12 +8,6 @@ namespace UserManagement.Data;
 
 public class DataContext : DbContext, IDataContext
 {
-    public DataContext()
-    {
-        // Normally we would not Migrate at runtime, but this is just a demonstration
-        Database.Migrate();
-    }
-
     protected override void OnConfiguring(DbContextOptionsBuilder options)
     {
         // Normally would set this within a Hosting builder and use IConfiguration
@@ -31,6 +25,7 @@ public class DataContext : DbContext, IDataContext
     {
         model.Entity<User>(builder =>
         {
+            builder.ToTable("User");
             builder.HasKey(u => u.Id);
             builder.Property(u => u.Id)
                 .ValueGeneratedOnAdd();

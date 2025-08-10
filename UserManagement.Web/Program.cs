@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using UserManagement.Data;
 using Westwind.AspNetCore.Markdown;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +14,9 @@ builder.Services
     .AddControllersWithViews();
 
 var app = builder.Build();
+
+// Normally we would not Migrate at runtime, but this is just a demonstration
+app.Services.GetRequiredService<DataContext>().Database.Migrate();
 
 app.UseMarkdown();
 
