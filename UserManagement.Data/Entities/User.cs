@@ -1,11 +1,10 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using UserManagement.Data.Interfaces;
 
 namespace UserManagement.Models;
 
-public class User : ILongEntity
+public class User
 {
     [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public long Id { get; set; }

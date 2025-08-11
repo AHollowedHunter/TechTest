@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using UserManagement.Data.Interfaces;
 using UserManagement.Models;
 
 namespace UserManagement.Data;
@@ -31,22 +31,16 @@ public class DataContext : DbContext, IDataContext
     public IQueryable<TEntity> GetAll<TEntity>() where TEntity : class
         => base.Set<TEntity>();
 
-    public TEntity? Get<TEntity, TId>(TId id) where TEntity : class, IEntity<TId> where TId : IEquatable<TId>
-        => base.Set<TEntity>().SingleOrDefault(x => x.Id.Equals(id));
-
-    public TEntity? Get<TEntity>(long id) where TEntity : class, ILongEntity
-        => Get<TEntity, long>(id);
-
-    public bool Exists<TEntity, TId>(long id) where TEntity : class, IEntity<TId> where TId : IEquatable<TId>
-        => base.Set<TEntity>().Any(x => x.Id.Equals(id));
-
-    public bool Exists<TEntity>(long id) where TEntity : class, ILongEntity
-        => Exists<TEntity, long>(id);
-
     public void Create<TEntity>(TEntity entity) where TEntity : class
     {
         base.Add(entity);
         SaveChanges();
+    }
+
+    public async ValueTask CreateAsync<TEntity>(TEntity entity) where TEntity : class
+    {
+        await base.AddAsync(entity);
+        await SaveChangesAsync();
     }
 
     public new void Update<TEntity>(TEntity entity) where TEntity : class
@@ -55,10 +49,22 @@ public class DataContext : DbContext, IDataContext
         SaveChanges();
     }
 
+    public Task UpdateAsync<TEntity>(TEntity entity) where TEntity : class
+    {
+        base.Update(entity);
+        return SaveChangesAsync();
+    }
+
     public void Delete<TEntity>(TEntity entity) where TEntity : class
     {
         base.Remove(entity);
         SaveChanges();
+    }
+
+    public Task DeleteAsync<TEntity>(TEntity entity) where TEntity : class
+    {
+        base.Remove(entity);
+        return SaveChangesAsync();
     }
 
     #region SeedData

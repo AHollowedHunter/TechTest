@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using UserManagement.Services.Domain.Interfaces;
 using UserManagement.Web.Models.Users;
 
@@ -12,14 +13,14 @@ public class UsersController : Controller
 
     public UsersController(IUserService userService, IUserLogService userLogService)
     {
-        _userService         = userService;
+        _userService    = userService;
         _userLogService = userLogService;
     }
 
     [HttpGet]
-    public ViewResult List(bool? isActive = null)
+    public async Task<ViewResult> List(bool? isActive = null)
     {
-        var users = isActive is null ? _userService.GetAll() : _userService.FilterByActive(isActive.Value);
+        var users = await (isActive is null ? _userService.GetAllAsync() : _userService.FilterByActiveAsync(isActive.Value));
 
         var items = users.Select(UserListItemViewModel.FromUser);
 
@@ -29,15 +30,14 @@ public class UsersController : Controller
     }
 
     [HttpGet("{id:long}")]
-    public IActionResult ViewUser(long id)
+    public async Task<IActionResult> ViewUser(long id)
     {
-        if (_userService.GetById(id) is not { } user)
+        if (await _userService.GetByIdAsync(id) is not { } user)
             return NotFound();
 
         var model = UserViewModel.FromUser(user);
-        model.Logs = _userLogService.GetForUser(id);
+        model.Logs = await _userLogService.GetForUserAsync(id);
         return View(model);
-
     }
 
     [HttpGet("add")]
@@ -48,22 +48,22 @@ public class UsersController : Controller
 
     [HttpPost("add")]
     [ValidateAntiForgeryToken]
-    public IActionResult AddPost([FromForm] UserListItemViewModel model)
+    public async Task<ActionResult> AddPost([FromForm] UserListItemViewModel model)
     {
         if (ModelState.IsValid is false)
             return BadRequest();
 
         var user = model.ToUser();
 
-        _userService.Create(user);
+        await _userService.CreateAsync(user);
 
         return RedirectToViewUser(user.Id);
     }
 
     [HttpGet("{id:long}/edit")]
-    public IActionResult Edit(long id)
+    public async Task<IActionResult> Edit(long id)
     {
-        if (_userService.GetById(id) is not { } user)
+        if (await _userService.GetByIdAsync(id) is not { } user)
             return NotFound();
 
         return View(UserListItemViewModel.FromUser(user));
@@ -71,9 +71,9 @@ public class UsersController : Controller
 
     [HttpPost("edit")]
     [ValidateAntiForgeryToken]
-    public IActionResult EditPost([FromForm] UserListItemViewModel model)
+    public async Task<IActionResult> EditPost([FromForm] UserListItemViewModel model)
     {
-        if (_userService.Exists(model.Id) is false)
+        if (await _userService.ExistsAsync(model.Id) is false)
             return NotFound();
 
         if (ModelState.IsValid is false)
@@ -81,15 +81,15 @@ public class UsersController : Controller
 
         var user = model.ToUser();
 
-        _userService.Edit(user);
+        await _userService.EditAsync(user);
 
         return RedirectToViewUser(model.Id);
     }
 
     [HttpGet("{id:long}/delete")]
-    public IActionResult Delete(long id)
+    public async Task<IActionResult> Delete(long id)
     {
-        if (_userService.GetById(id) is not { } user)
+        if (await _userService.GetByIdAsync(id) is not { } user)
             return NotFound();
 
         return View(UserListItemViewModel.FromUser(user));
@@ -97,12 +97,12 @@ public class UsersController : Controller
 
     [HttpPost("{id:long}/delete")]
     [ValidateAntiForgeryToken]
-    public IActionResult DeletePost(long id)
+    public async Task<IActionResult> DeletePost(long id)
     {
-        if (_userService.GetById(id) is not { } user)
+        if (await _userService.GetByIdAsync(id) is not { } user)
             return NotFound();
 
-        _userService.Delete(user);
+        await _userService.DeleteAsync(user);
         return RedirectToAction("List");
     }
 

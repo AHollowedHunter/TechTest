@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using UserManagement.Models;
 
 namespace UserManagement.Services.Domain.Interfaces;
@@ -35,4 +36,11 @@ public interface IUserService
     void Delete(User user);
 
     bool Exists(long id);
+    Task<IEnumerable<User>> GetAllAsync();
+    Task<IEnumerable<User>> FilterByActiveAsync(bool isActive);
+    Task<User?> GetByIdAsync(long id);
+    Task<bool> ExistsAsync(long id);
+    Task<long> CreateAsync(User user);
+    Task EditAsync(User user);
+    Task DeleteAsync(User user);
 }

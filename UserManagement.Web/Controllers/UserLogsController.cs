@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using UserManagement.Services.Domain.Interfaces;
 using UserManagement.Web.Models.UserLogs;
 
@@ -15,9 +16,9 @@ public class UserLogsController : Controller
     }
 
     [HttpGet]
-    public ViewResult List()
+    public async Task<ViewResult> List()
     {
-        var items = _userLogService.GetAll().Select(UserLogListItemViewModel.FromUserLog);
+        var items = (await _userLogService.GetAllAsync()).Select(UserLogListItemViewModel.FromUserLog);
 
         var model = new UserLogListViewModel() { Items = items.ToList() };
 
