@@ -18,13 +18,16 @@ public class UserService : IUserService
     /// <param name="isActive"></param>
     /// <returns></returns>
     public IEnumerable<User> FilterByActive(bool isActive)
-        => _dataAccess.GetAll<User>().Where(x => x.IsActive == isActive);
+        => _dataAccess.GetAll<User>().Where(x => x.IsActive == isActive).ToArray();
 
-    public IEnumerable<User> GetAll() => _dataAccess.GetAll<User>();
+    public IEnumerable<User> GetAll()
+        => _dataAccess.GetAll<User>().ToArray();
 
-    public User? GetById(long id) => _dataAccess.Get<User>(id);
+    public User? GetById(long id)
+        => _dataAccess.GetAll<User>().SingleOrDefault(x => x.Id == id);
 
-    public bool Exists(long id) => _dataAccess.Exists<User>(id);
+    public bool Exists(long id)
+        => _dataAccess.GetAll<User>().Any(u => u.Id == id);
 
     /// <inheritdoc />
     public long Create(User user)

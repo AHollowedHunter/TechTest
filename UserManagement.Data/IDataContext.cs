@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using UserManagement.Data.Interfaces;
+﻿using System.Linq;
 
 namespace UserManagement.Data;
 
@@ -13,13 +10,6 @@ public interface IDataContext
     /// <typeparam name="TEntity"></typeparam>
     /// <returns></returns>
     IQueryable<TEntity> GetAll<TEntity>() where TEntity : class;
-
-    /// <summary>
-    /// Get an entity
-    /// </summary>
-    /// <typeparam name="TEntity"></typeparam>
-    /// <returns></returns>
-    TEntity? Get<TEntity>(long id) where TEntity : class, ILongEntity;
 
     /// <summary>
     /// Create a new item
@@ -38,7 +28,4 @@ public interface IDataContext
     void Update<TEntity>(TEntity entity) where TEntity : class;
 
     void Delete<TEntity>(TEntity entity) where TEntity : class;
-
-    bool Exists<TEntity, TId>(long id) where TEntity : class, IEntity<TId> where TId : IEquatable<TId>;
-    bool Exists<TEntity>(long id) where TEntity : class, ILongEntity;
 }

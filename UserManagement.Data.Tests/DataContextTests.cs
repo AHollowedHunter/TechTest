@@ -50,7 +50,7 @@ public class DataContextTests
         var entity = new User { Id = id, Forename = "Brand New", Surname = "User", Email = "brandnewuser@example.com" };
         context.Create(entity);
 
-        var result = context.Get<User>(id);
+        var result = context.GetAll<User>().SingleOrDefault(u => u.Id == id);
 
         result.Should().BeEquivalentTo(entity);
     }
@@ -62,7 +62,7 @@ public class DataContextTests
 
         var id = 42;
 
-        var result = context.Get<User>(id);
+        var result = context.GetAll<User>().SingleOrDefault(u => u.Id == id);
 
         result.Should().BeNull();
     }
