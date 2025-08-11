@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using System.Linq.Expressions;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using UserManagement.Models;
 
@@ -37,16 +37,34 @@ public class DataContext : DbContext, IDataContext
         SaveChanges();
     }
 
+    public async ValueTask CreateAsync<TEntity>(TEntity entity) where TEntity : class
+    {
+        await base.AddAsync(entity);
+        await SaveChangesAsync();
+    }
+
     public new void Update<TEntity>(TEntity entity) where TEntity : class
     {
         base.Update(entity);
         SaveChanges();
     }
 
+    public Task UpdateAsync<TEntity>(TEntity entity) where TEntity : class
+    {
+        base.Update(entity);
+        return SaveChangesAsync();
+    }
+
     public void Delete<TEntity>(TEntity entity) where TEntity : class
     {
         base.Remove(entity);
         SaveChanges();
+    }
+
+    public Task DeleteAsync<TEntity>(TEntity entity) where TEntity : class
+    {
+        base.Remove(entity);
+        return SaveChangesAsync();
     }
 
     #region SeedData
