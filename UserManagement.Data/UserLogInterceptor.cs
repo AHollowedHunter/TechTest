@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using UserManagement.Models;
@@ -12,7 +14,18 @@ public class UserLogInterceptor : SaveChangesInterceptor
         if (eventData.Context is { } dataContext)
             Log(dataContext);
 
-        return result;
+        return base.SavingChanges(eventData, result);
+    }
+
+    public override ValueTask<InterceptionResult<int>> SavingChangesAsync(
+        DbContextEventData eventData,
+        InterceptionResult<int> result,
+        CancellationToken cancellationToken = new())
+    {
+        if (eventData.Context is { } dataContext)
+            Log(dataContext);
+
+        return base.SavingChangesAsync(eventData, result, cancellationToken);
     }
 
     private void Log(DbContext context)

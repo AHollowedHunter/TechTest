@@ -22,14 +22,14 @@ public class UserService : IUserService
     public IEnumerable<User> FilterByActive(bool isActive)
         => _dataAccess.GetAll<User>().Where(x => x.IsActive == isActive);
 
-    public IAsyncEnumerable<User> FilterByActiveAsync(bool isActive)
-        => _dataAccess.GetAll<User>().Where(x => x.IsActive == isActive).AsAsyncEnumerable();
+    public async Task<IEnumerable<User>> FilterByActiveAsync(bool isActive)
+        => await _dataAccess.GetAll<User>().Where(x => x.IsActive == isActive).ToListAsync();
 
     public IEnumerable<User> GetAll()
         => _dataAccess.GetAll<User>();
 
-    public IAsyncEnumerable<User> GetAllAsync()
-        => _dataAccess.GetAll<User>().AsAsyncEnumerable();
+    public async Task<IEnumerable<User>> GetAllAsync()
+        => await _dataAccess.GetAll<User>().ToListAsync();
 
     public User? GetById(long id)
         => _dataAccess.GetAll<User>().SingleOrDefault(x => x.Id == id);

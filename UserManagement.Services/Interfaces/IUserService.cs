@@ -36,8 +36,8 @@ public interface IUserService
     void Delete(User user);
 
     bool Exists(long id);
-    IAsyncEnumerable<User> GetAllAsync();
-    IAsyncEnumerable<User> FilterByActiveAsync(bool isActive);
+    Task<IEnumerable<User>> GetAllAsync();
+    Task<IEnumerable<User>> FilterByActiveAsync(bool isActive);
     Task<User?> GetByIdAsync(long id);
     Task<bool> ExistsAsync(long id);
     Task<long> CreateAsync(User user);
