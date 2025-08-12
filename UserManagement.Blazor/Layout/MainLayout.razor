@@ -1,3 +1,53 @@
 ﻿@inherits LayoutComponentBase
 
-@Body
+@inject IThemeService ThemeService
+
+<MudThemeProvider @ref="@_mudThemeProvider" Theme="@ThemeService.Theme" IsDarkMode="@ThemeService.IsDarkMode" />
+<MudDialogProvider CloseOnEscapeKey="true" />
+<MudSnackbarProvider />
+<MudPopoverProvider />
+
+<MudLayout>
+    <MudDrawer @bind-Open="_drawerOpen"
+               Breakpoint="@Breakpoint.Xs"
+               Variant="DrawerVariant.Mini"
+               Elevation="2"
+               Fixed=true>
+        <MudNavLink OnClick="DrawerToggle"
+                    Icon="@(_drawerOpen ? Icon.MenuOpen : Icon.Menu)"
+                    IconColor="Color.Inherit"
+                    role="button" />
+
+        <MudNavMenu Bordered Color="Color.Primary">
+            <MudNavLink Href="/"
+                        Match="NavLinkMatch.All"
+                        IconColor="Color.Inherit"
+                        Icon="@Icon.Home"
+                        title="Home">Home</MudNavLink>
+            <MudNavLink Href="/users"
+                        Match="NavLinkMatch.All"
+                        IconColor="Color.Inherit"
+                        Icon="@Icon.ManageAccounts"
+                        title="Users">User</MudNavLink>
+            <MudNavLink Href="/user-logs"
+                        Match="NavLinkMatch.All"
+                        IconColor="Color.Inherit"
+                        Icon="@Icon.List"
+                        title="Users">User</MudNavLink>
+        </MudNavMenu>
+
+        <MudSpacer />
+
+        <MudNavMenu Bordered Color="Color.Inherit">
+            @* TODO *@
+            @* <MudNavLink OnClick="@null" 
+                        IconColor="Color.Inherit"
+                        Icon="@Icon.Settings"
+                        title="Settings">Settings</MudNavLink> *@
+        </MudNavMenu>
+    </MudDrawer>
+
+    <MudContainer Class="py-4">
+        @Body
+    </MudContainer>
+</MudLayout>

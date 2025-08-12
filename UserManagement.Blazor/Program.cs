@@ -1,5 +1,8 @@
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using MudBlazor.Services;
+using UserManagement.Blazor.Services;
 
 namespace UserManagement.Blazor;
 public class Program
@@ -10,7 +13,10 @@ public class Program
         builder.RootComponents.Add<App>("#app");
         builder.RootComponents.Add<HeadOutlet>("head::after");
 
-        builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+        builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) })
+            .AddMudServices()
+            .TryAddScoped<IThemeService, DefaultThemeService>(); ;
+
 
         await builder.Build().RunAsync();
     }

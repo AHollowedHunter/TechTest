@@ -6,7 +6,21 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <!--See https://jonhilton.net/visual-studio-2022-blazor-css-intellisense/-->
+  <!--<Target Name="CollectMudBlazorStaticAssets" DependsOnTargets="ResolveStaticWebAssetsInputs" AfterTargets="Build" Condition=" '$(Configuration)' == 'Debug' ">-->
+  <Target Name="CollectMudBlazorStaticAssets" AfterTargets="Build" Condition=" '$(Configuration)' == 'Debug' ">
+    <Copy SourceFiles="%(StaticWebAsset.Identity)" DestinationFolder="wwwroot/temp" Condition="$([System.String]::Copy(%(StaticWebAsset.Identity)).Contains('mudblazor'))" />
+  </Target>
+
   <ItemGroup>
+    <Content Update="wwwroot/**" Pack="true" />
+    <Content Remove="wwwroot\js\**\*" />
+    <None Remove="wwwroot\temp\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MudBlazor" Version="8.11.0" />
+    
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.8" PrivateAssets="all" />
   </ItemGroup>
