@@ -10,12 +10,10 @@ namespace UserManagement.WebMS.Controllers;
 public class UsersAPIController : Controller
 {
     private readonly IUserService _userService;
-    private readonly IUserLogService _userLogService;
 
-    public UsersAPIController(IUserService userService, IUserLogService userLogService)
+    public UsersAPIController(IUserService userService)
     {
-        _userService    = userService;
-        _userLogService = userLogService;
+        _userService = userService;
     }
 
     [HttpGet]
@@ -27,25 +25,16 @@ public class UsersAPIController : Controller
     }
 
     [HttpGet("{id:long}")]
-    public async Task<IActionResult> ViewUser(long id)
+    public async Task<ActionResult<User>> ViewUser(long id)
     {
         if (await _userService.GetByIdAsync(id) is not { } user)
             return NotFound();
 
-        var model = UserViewModel.FromUser(user);
-        model.Logs = await _userLogService.GetForUserAsync(id);
-        return View(model);
+        return Ok(user);
     }
 
-    [HttpGet("add")]
-    public IActionResult Add()
-    {
-        return View(new UserListItemViewModel());
-    }
-
-    [HttpPost("add")]
-    [ValidateAntiForgeryToken]
-    public async Task<ActionResult> AddPost([FromForm] UserListItemViewModel model)
+    [HttpPost]
+    public async Task<ActionResult> Add([FromForm] UserListItemViewModel model)
     {
         if (ModelState.IsValid is false)
             return BadRequest();
@@ -54,21 +43,11 @@ public class UsersAPIController : Controller
 
         await _userService.CreateAsync(user);
 
-        return RedirectToViewUser(user.Id);
+        return Created();
     }
 
-    [HttpGet("{id:long}/edit")]
-    public async Task<IActionResult> Edit(long id)
-    {
-        if (await _userService.GetByIdAsync(id) is not { } user)
-            return NotFound();
-
-        return View(UserListItemViewModel.FromUser(user));
-    }
-
-    [HttpPost("edit")]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> EditPost([FromForm] UserListItemViewModel model)
+    [HttpPut]
+    public async Task<IActionResult> Edit([FromForm] UserListItemViewModel model)
     {
         if (await _userService.ExistsAsync(model.Id) is false)
             return NotFound();
@@ -80,27 +59,17 @@ public class UsersAPIController : Controller
 
         await _userService.EditAsync(user);
 
-        return RedirectToViewUser(model.Id);
+        return NoContent();
     }
 
-    [HttpGet("{id:long}/delete")]
+    [HttpDelete("{id:long}")]
     public async Task<IActionResult> Delete(long id)
     {
         if (await _userService.GetByIdAsync(id) is not { } user)
             return NotFound();
 
-        return View(UserListItemViewModel.FromUser(user));
-    }
-
-    [HttpPost("{id:long}/delete")]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeletePost(long id)
-    {
-        if (await _userService.GetByIdAsync(id) is not { } user)
-            return NotFound();
-
         await _userService.DeleteAsync(user);
-        return RedirectToAction("List");
+        return NoContent();
     }
 
     private RedirectToActionResult RedirectToViewUser(long id) => RedirectToAction("ViewUser", new { id });
