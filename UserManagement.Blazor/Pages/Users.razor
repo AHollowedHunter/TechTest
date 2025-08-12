@@ -3,22 +3,52 @@
 
 @inject UserApiClient UserApi
 
-<h3>Users</h3>
-
-@foreach (var user in _users)
-{
-    <div>
-        @user.Email
-    </div>
-}
+<MudDataGrid @ref="_userGrid" T="User" ServerData="ServerReload">
+    <ToolBarContent>
+        <MudText Typo="Typo.h4">Users</MudText>
+        <MudSpacer />
+        <MudToggleGroup @bind-Value="@_filterActive" @bind-Value:after="() => _userGrid.ReloadServerData()">
+            <MudToggleItem T="Nullable<bool>" Value="null">Show All</MudToggleItem>
+            <MudToggleItem T="Nullable<bool>" Value="true">Active Only</MudToggleItem>
+            <MudToggleItem T="Nullable<bool>" Value="false">Inactive Only</MudToggleItem>
+        </MudToggleGroup>
+        <MudSpacer/>
+        <MudButton StartIcon="@Icon.Add" Variant="Variant.Outlined" Color="Color.Primary">Add User</MudButton>
+    </ToolBarContent>
+    <Columns>
+        <PropertyColumn Property="u => u.Id" />
+        <PropertyColumn Property="u => u.Forename" />
+        <PropertyColumn Property="u => u.Surname" />
+        <PropertyColumn Property="u => u.Email" />
+        <PropertyColumn Property="u => u.DateOfBirth" />
+        <PropertyColumn Property="u => u.IsActive" />
+        <TemplateColumn>
+            <CellTemplate>
+                <MudButtonGroup Color="Color.Primary" Variant="Variant.Outlined">
+                    <MudButton StartIcon="@Icon.Person">View</MudButton>
+                    <MudMenu Icon="@Icons.Material.Filled.ArrowDropDown" Style="align-self: auto;">
+                        <MudMenuItem Icon="@Icon.Edit">Edit</MudMenuItem>
+                        <MudMenuItem Icon="@Icon.Delete">Delete</MudMenuItem>
+                    </MudMenu>
+                </MudButtonGroup>
+            </CellTemplate>
+        </TemplateColumn>
+    </Columns>
+</MudDataGrid>
 
 @code {
-    private User[] _users = [];
+    private bool? _filterActive = null;
+    private MudDataGrid<User> _userGrid = default!;
 
-    protected override async Task OnInitializedAsync()
+    private async Task<GridData<User>> ServerReload(GridState<User> state)
     {
-        var result = await UserApi.GetUsersAsync();
+        var users = await UserApi.GetUsersAsync(_filterActive);
 
-        _users = result.ToArray();
+        var userArray = users.ToArray();
+        return new GridData<User>
+        {
+            TotalItems = userArray.Length,
+            Items = userArray
+        };
     }
 }

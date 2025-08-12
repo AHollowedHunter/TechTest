@@ -6,12 +6,18 @@ namespace UserManagement.Blazor;
 
 public class UserApiClient(HttpClient httpClient)
 {
-    public async Task<List<User>> GetUsersAsync(CancellationToken cancellationToken = default)
+    public async Task<List<User>> GetUsersAsync(bool? filterActive = null, CancellationToken cancellationToken = default)
     {
         List<User> users = [];
         try
         {
-            await foreach (var user in httpClient.GetFromJsonAsAsyncEnumerable<User>("/api/users", cancellationToken))
+            var uri = "/api/users";
+            if (filterActive is { } filter)
+            {
+                uri += $"?isActive={filter}";
+            }
+
+            await foreach (var user in httpClient.GetFromJsonAsAsyncEnumerable<User>(uri, cancellationToken))
             {
                 if (user is not null)
                 {
