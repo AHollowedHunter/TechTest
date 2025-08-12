@@ -5,6 +5,7 @@ namespace UserManagement.Blazor.Layout;
 public partial class MainLayout
 {
     private bool _drawerOpen = false;
+    private string _themeIcon = Icons.Material.Filled.AutoMode;
     private MudThemeProvider _mudThemeProvider = default!;
 
     protected override Task OnInitializedAsync()
@@ -23,11 +24,30 @@ public partial class MainLayout
         }
     }
 
+    private void ToggleTheme()
+    {
+        ThemeService.ThemeMode = ThemeService.ThemeMode switch
+        {
+            ThemeMode.Auto => ThemeMode.Light,
+            ThemeMode.Light => ThemeMode.Dark,
+            ThemeMode.Dark => ThemeMode.Auto,
+            _ => ThemeMode.Auto,
+        };
+    }
+
     private void DrawerToggle()
         => _drawerOpen = !_drawerOpen;
 
     private void ThemeUpdated(object? sender, EventArgs eventArgs)
-        => StateHasChanged();
+    {
+        _themeIcon = ThemeService.ThemeMode switch
+        {
+            ThemeMode.Light => Icons.Material.Filled.LightMode,
+            ThemeMode.Dark => Icons.Material.Filled.DarkMode,
+            _ => Icons.Material.Filled.AutoMode,
+        };
+        StateHasChanged();
+    }
 
     private Task SystemDarkModeChanged(bool isDarkMode)
     {

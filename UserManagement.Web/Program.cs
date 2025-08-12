@@ -11,7 +11,20 @@ builder.Services
     .AddMarkdown()
     .AddControllersWithViews();
 
+// CORS for Blazor
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(MyAllowSpecificOrigins, builder =>
+    {
+        builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+    });
+});
+
 var app = builder.Build();
+
+// CORS for Blazor
+app.UseCors(MyAllowSpecificOrigins);
 
 app.UseMarkdown();
 

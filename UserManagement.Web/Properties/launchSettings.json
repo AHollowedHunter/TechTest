@@ -11,6 +11,16 @@
     "UserManagement.Web": {
       "commandName": "Project",
       "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "applicationUrl": "https://localhost:7084;http://localhost:5084",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ProxyTo": "http://localhost:62507"
+      }
+    },
+    "UserManagement.Web-NOBROWSER": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
       "launchBrowser": false,
       "applicationUrl": "https://localhost:7084;http://localhost:5084",
       "environmentVariables": {

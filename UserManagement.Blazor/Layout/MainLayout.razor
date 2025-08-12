@@ -39,15 +39,16 @@
         <MudSpacer />
 
         <MudNavMenu Bordered Color="Color.Inherit">
-            @* TODO *@
-            @* <MudNavLink OnClick="@null" 
+            <MudNavLink OnClick="@ToggleTheme"
                         IconColor="Color.Inherit"
-                        Icon="@Icon.Settings"
-                        title="Settings">Settings</MudNavLink> *@
+                        Icon="@_themeIcon"
+                        title="Toggle Theme">Toggle Theme</MudNavLink>
         </MudNavMenu>
     </MudDrawer>
 
-    <MudContainer Class="py-4">
-        @Body
-    </MudContainer>
+    <div>
+        <MudContainer Class="py-4">
+            @Body
+        </MudContainer>
+    </div>
 </MudLayout>

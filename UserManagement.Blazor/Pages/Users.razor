@@ -1,7 +1,24 @@
 ﻿@page "/users"
+@using UserManagement.Models
+
+@inject UserApiClient UserApi
 
 <h3>Users</h3>
 
-@code {
+@foreach (var user in _users)
+{
+    <div>
+        @user.Email
+    </div>
+}
 
+@code {
+    private User[] _users = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await UserApi.GetUsersAsync();
+
+        _users = result.ToArray();
+    }
 }
