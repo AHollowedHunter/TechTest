@@ -33,4 +33,9 @@ public class UserApiClient(HttpClient httpClient)
 
         return users;
     }
+
+    public async Task<bool> DeleteUserAsync(long userId)
+    {
+        return (await httpClient.DeleteAsync($"/api/users/{userId}")).IsSuccessStatusCode;
+    }
 }

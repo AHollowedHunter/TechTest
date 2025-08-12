@@ -2,6 +2,8 @@
 @using UserManagement.Models
 
 @inject UserApiClient UserApi
+@inject IDialogService DialogService
+@inject ISnackbar Snackbar
 
 <MudDataGrid @ref="_userGrid" T="User" ServerData="ServerReload">
     <ToolBarContent>
@@ -12,7 +14,7 @@
             <MudToggleItem T="Nullable<bool>" Value="true">Active Only</MudToggleItem>
             <MudToggleItem T="Nullable<bool>" Value="false">Inactive Only</MudToggleItem>
         </MudToggleGroup>
-        <MudSpacer/>
+        <MudSpacer />
         <MudButton StartIcon="@Icon.Add" Variant="Variant.Outlined" Color="Color.Primary">Add User</MudButton>
     </ToolBarContent>
     <Columns>
@@ -25,10 +27,10 @@
         <TemplateColumn>
             <CellTemplate>
                 <MudButtonGroup Color="Color.Primary" Variant="Variant.Outlined">
-                    <MudButton StartIcon="@Icon.Person">View</MudButton>
+                    <MudButton StartIcon="@Icon.Person" OnClick="@(async e => await ShowUserViewDialog(context.Item))">View</MudButton>
                     <MudMenu Icon="@Icons.Material.Filled.ArrowDropDown" Style="align-self: auto;">
                         <MudMenuItem Icon="@Icon.Edit">Edit</MudMenuItem>
-                        <MudMenuItem Icon="@Icon.Delete">Delete</MudMenuItem>
+                        <MudMenuItem Icon="@Icon.Delete" OnClick="@(async e => await ShowUserDeleteDialog(context.Item))">Delete</MudMenuItem>
                     </MudMenu>
                 </MudButtonGroup>
             </CellTemplate>
@@ -50,5 +52,26 @@
             TotalItems = userArray.Length,
             Items = userArray
         };
+    }
+
+    private Task ShowUserViewDialog(User user)
+    {
+        return DialogService.ShowUserViewAsync(user);
+    }
+
+    private async Task ShowUserDeleteDialog(User user)
+    {
+        var dialog = await DialogService.ShowUserDeleteAsync(user);
+
+        var result = await dialog.Result;
+        if (result is { Canceled: false, Data: bool d } && d is true)
+        {
+            var deleteResult = await UserApi.DeleteUserAsync(user.Id);
+            if (!deleteResult)
+            {
+                Snackbar.Add($"Failed to delete user with Id '{user.Id}'", Severity.Error);
+            }
+        }
+        await _userGrid.ReloadServerData();
     }
 }

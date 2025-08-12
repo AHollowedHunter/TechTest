@@ -1,0 +1,47 @@
+﻿@using UserManagement.Models
+@inherits UserDialog
+
+<MudDialog>
+    <DialogContent>
+        <table class="kv-table">
+            <tbody>
+                <tr>
+                    <td>Id</td>
+                    <td>@User.Id</td>
+                </tr>
+
+                <tr>
+                    <td>Forename</td>
+                    <td>@User.Forename</td>
+                </tr>
+
+                <tr>
+                    <td>Surname</td>
+                    <td>@User.Surname</td>
+                </tr>
+
+                <tr>
+                    <td>Email</td>
+                    <td>@User.Email</td>
+                </tr>
+
+                <tr>
+                    <td>Date Of Birth</td>
+                    <td>@User.DateOfBirth</td>
+                </tr>
+
+                <tr>
+                    <td>Active</td>
+                    <td>@User.IsActive</td>
+                </tr>
+            </tbody>
+        </table>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Close">Close</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    private void Close() => MudDialog.Close();
+}
