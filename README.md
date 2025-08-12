@@ -13,6 +13,16 @@
  - I added in Task based method where applicable to the `IDataContext` and`IUserService`.
  - I changed all applicable Controller actions to utilise Tasks and async.
 
+
+#### PR #5 Implements 5. Extend - Blazor UI, Web API
+
+# How to run the Blazor app.
+
+Select the Startup Item of "Blazor + API", which will start the UserManagement.Blazor and UserManagement.Web projects, launching a browser window to the Blazor app.
+- You will need to use Chrome or Edge to debug the Blazor app, this is a limitation with Blazor Web Assembly.
+- You can alternatively run the Web project manually via CLI.
+- Ensure you use the launch settings for HTTPS, or update the `ApiHost` const within UserManagement.Blazor.Program to the correct URL
+
 ---
 
 # User Management Technical Exercise
