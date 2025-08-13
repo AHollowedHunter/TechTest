@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using UserManagement.Models;
 using UserManagement.Services.Domain.Interfaces;
-using UserManagement.Web.Models.Users;
 
 namespace UserManagement.WebMS.Controllers;
 

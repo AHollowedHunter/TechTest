@@ -1,7 +1,46 @@
 ﻿@page "/"
 
+@inject IUserApiClient UserApi
+
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+<MudGrid>
+    <MudItem>
+        <MudCard>
+            <MudCardHeader>
+                <MudText Typo="Typo.h4">Total Users</MudText>
+            </MudCardHeader>
+            <MudCardContent Class="d-flex justify-center">
+                <span style="font-size: 96px; font-weight: 600; color: var(--mud-palette-primary);">@_userCount</span>
+            </MudCardContent>
+            <MudCardActions>
+                <MudButton Href="/users" Color="Color.Primary">Goto Users</MudButton>
+            </MudCardActions>
+        </MudCard>
+    </MudItem>
+    <MudItem>
+        <MudCard>
+            <MudCardHeader>
+                <MudText Typo="Typo.h4">Active Users</MudText>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudChart ChartType="ChartType.Pie" InputData="@_pieData" InputLabels="@_activePieLabels" Width="300px" Height="300px" />
+            </MudCardContent>
+        </MudCard>
+    </MudItem>
+</MudGrid>
 
-Welcome to your new app.
+@code {
+    private int _userCount;
+    private double[] _pieData = new double[2];
+    private string[] _activePieLabels = ["Active", "Inactive"];
+
+    protected override async Task OnInitializedAsync()
+    {
+        var users = await UserApi.GetUsersAsync();
+
+        _userCount = users.Count;
+        _pieData[0] = users.Count(u => u.IsActive);
+        _pieData[1] = _userCount - _pieData[0];
+    }
+}
