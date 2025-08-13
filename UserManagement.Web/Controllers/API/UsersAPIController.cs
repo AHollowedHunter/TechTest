@@ -34,12 +34,10 @@ public class UsersApiController : Controller
     }
 
     [HttpPost]
-    public async Task<ActionResult> Add([FromForm] UserListItemViewModel model)
+    public async Task<ActionResult> Add(User user)
     {
         if (ModelState.IsValid is false)
             return BadRequest();
-
-        var user = model.ToUser();
 
         await _userService.CreateAsync(user);
 
@@ -47,15 +45,13 @@ public class UsersApiController : Controller
     }
 
     [HttpPut]
-    public async Task<IActionResult> Edit([FromForm] UserListItemViewModel model)
+    public async Task<IActionResult> Edit(User user)
     {
-        if (await _userService.ExistsAsync(model.Id) is false)
+        if (await _userService.ExistsAsync(user.Id) is false)
             return NotFound();
 
         if (ModelState.IsValid is false)
             return BadRequest();
-
-        var user = model.ToUser();
 
         await _userService.EditAsync(user);
 

@@ -1,0 +1,50 @@
+﻿@using System.ComponentModel.DataAnnotations
+@using UserManagement.Models
+@inherits UserDialog
+
+<MudDialog>
+    <DialogContent>
+        <MudForm @ref="_form" @bind-IsValid="@_success" @bind-Errors="@_errors">
+            <MudStack Spacing="4">
+                <MudTextField @bind-Value="User.Forename" T="string" Label="Forename" Required="true" RequiredError="Forename is required!"
+                              Validation="@(new StringLengthAttribute(50) {ErrorMessage = "Forename is too long"})" />
+
+                <MudTextField @bind-Value="User.Surname" T="string" Label="Surname" Required="true" RequiredError="Surname is required!"
+                              Validation="@(new StringLengthAttribute(50) {ErrorMessage = "Forename is too long"})" />
+
+                <MudTextField @bind-Value="User.Email" T="string" Label="Email" Required="true" RequiredError="Email is required!"
+                              Validation="@(new EmailAddressAttribute() {ErrorMessage = "The email address is invalid"})" />
+
+                <MudDatePicker @bind-Date="_date" Label="Date Of Birth" />
+
+                <MudSwitch @bind-Value="User.IsActive" Color="Color.Primary" Label="Is Active" />
+            </MudStack>
+        </MudForm>
+    </DialogContent>
+
+    <DialogActions>
+        <MudButton OnClick="Close">Cancel</MudButton>
+        <MudButton Disabled="@(!_success)" Variant="Variant.Filled" Color="Color.Success" OnClick="Confirm">Save</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    private MudForm _form = default!;
+    bool _success;
+    string[] _errors = { };
+
+    // HACK due to MudBlazor not supporting DateOnly
+    private DateTime? _date
+    {
+        get => User.DateOfBirth.ToDateTime(TimeOnly.MinValue);
+        set
+        {
+            if (value is not null)
+                User.DateOfBirth = DateOnly.FromDateTime((DateTime)value);
+        }
+    }
+
+    private void Confirm() => MudDialog.Close(DialogResult.Ok(User));
+
+    private void Close() => MudDialog.Close();
+}

@@ -15,7 +15,7 @@
             <MudToggleItem T="Nullable<bool>" Value="false">Inactive Only</MudToggleItem>
         </MudToggleGroup>
         <MudSpacer />
-        <MudButton StartIcon="@Icon.Add" Variant="Variant.Outlined" Color="Color.Primary">Add User</MudButton>
+        <MudButton StartIcon="@Icon.Add" Variant="Variant.Outlined" Color="Color.Primary" OnClick="@(async e => await ShowUserAddDialog())">Add User</MudButton>
     </ToolBarContent>
     <Columns>
         <PropertyColumn Property="u => u.Id" />
@@ -29,7 +29,7 @@
                 <MudButtonGroup Color="Color.Primary" Variant="Variant.Outlined">
                     <MudButton StartIcon="@Icon.Person" OnClick="@(async e => await ShowUserViewDialog(context.Item))">View</MudButton>
                     <MudMenu Icon="@Icons.Material.Filled.ArrowDropDown" Style="align-self: auto;">
-                        <MudMenuItem Icon="@Icon.Edit">Edit</MudMenuItem>
+                        <MudMenuItem Icon="@Icon.Edit" OnClick="@(async e => await ShowUserEditDialog(context.Item))">Edit</MudMenuItem>
                         <MudMenuItem Icon="@Icon.Delete" OnClick="@(async e => await ShowUserDeleteDialog(context.Item))">Delete</MudMenuItem>
                     </MudMenu>
                 </MudButtonGroup>
@@ -57,6 +57,38 @@
     private Task ShowUserViewDialog(User user)
     {
         return DialogService.ShowUserViewAsync(user);
+    }
+
+    private async Task ShowUserAddDialog()
+    {
+        var dialog = await DialogService.ShowUserAddAsync();
+
+        var result = await dialog.Result;
+        if (result is { Canceled: false, Data: User user })
+        {
+            var updateResult = await UserApi.AddUserAsync(user);
+            if (!updateResult)
+            {
+                Snackbar.Add($"Failed to add new user", Severity.Error);
+            }
+        }
+        await _userGrid.ReloadServerData();
+    }
+
+    private async Task ShowUserEditDialog(User user)
+    {
+        var dialog = await DialogService.ShowUserEditAsync(user);
+
+        var result = await dialog.Result;
+        if (result is { Canceled: false, Data: User { } })
+        {
+            var updateResult = await UserApi.UpdateUserAsync(user);
+            if (!updateResult)
+            {
+                Snackbar.Add($"Failed to update user with Id '{user.Id}'", Severity.Error);
+            }
+        }
+        await _userGrid.ReloadServerData();
     }
 
     private async Task ShowUserDeleteDialog(User user)
