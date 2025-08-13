@@ -1,0 +1,20 @@
+﻿@using UserManagement.Models
+@inherits UserDialog
+
+<MudDialog>
+    <DialogContent>
+        Are you sure you wish to permanently delete the following user?
+
+        @User.Id: @User.Forename @User.Surname - @User.Email
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="@Color.Error" Variant="Variant.Filled" OnClick="Confirm">Delete</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    private void Confirm() => MudDialog.Close(DialogResult.Ok(true));
+
+    private void Cancel() => MudDialog.Cancel();
+}

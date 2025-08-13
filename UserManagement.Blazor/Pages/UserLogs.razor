@@ -1,0 +1,22 @@
+﻿@page "/user-logs"
+@using UserManagement.Models
+
+
+@inject IUserLogApiClient UserLogApi
+
+<MudText Typo="Typo.h4" Class="pb-3">User Logs</MudText>
+<UserLogsGrid GetUserLogsFunc="() => UserLogApi.GetAsync()" />
+
+@code {
+    private async Task<GridData<UserLog>> ServerReload(GridState<UserLog> state)
+    {
+        var logs = await UserLogApi.GetAsync();
+
+        var logsArray = logs.ToArray();
+        return new GridData<UserLog>
+        {
+            TotalItems = logsArray.Length,
+            Items = logsArray,
+        };
+    }
+}

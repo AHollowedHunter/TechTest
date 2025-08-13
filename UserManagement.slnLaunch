@@ -1,0 +1,32 @@
+[
+  {
+    "Name": "Blazor + API",
+    "Projects": [
+      {
+        "Path": "UserManagement.Blazor\\UserManagement.Blazor.csproj",
+        "Action": "Start",
+        "DebugTarget": "https"
+      },
+      {
+        "Path": "UserManagement.Web\\UserManagement.Web.csproj",
+        "Action": "StartWithoutDebugging",
+        "DebugTarget": "UserManagement.Web-NOBROWSER"
+      }
+    ]
+  },
+  {
+    "Name": "Blazor + API NOBROWSER",
+    "Projects": [
+      {
+        "Path": "UserManagement.Blazor\\UserManagement.Blazor.csproj",
+        "Action": "Start",
+        "DebugTarget": "https-NOBROWSER"
+      },
+      {
+        "Path": "UserManagement.Web\\UserManagement.Web.csproj",
+        "Action": "StartWithoutDebugging",
+        "DebugTarget": "UserManagement.Web-NOBROWSER"
+      }
+    ]
+  }
+]

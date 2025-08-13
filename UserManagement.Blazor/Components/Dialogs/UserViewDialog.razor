@@ -1,0 +1,57 @@
+﻿@using UserManagement.Models
+@inherits UserDialog
+
+@inject IUserLogApiClient UserLogApi
+
+<MudDialog>
+    <DialogContent>
+        <table class="kv-table pb-4">
+            <tbody>
+                <tr>
+                    <td>Id</td>
+                    <td>@User.Id</td>
+                </tr>
+
+                <tr>
+                    <td>Forename</td>
+                    <td>@User.Forename</td>
+                </tr>
+
+                <tr>
+                    <td>Surname</td>
+                    <td>@User.Surname</td>
+                </tr>
+
+                <tr>
+                    <td>Email</td>
+                    <td>@User.Email</td>
+                </tr>
+
+                <tr>
+                    <td>Date Of Birth</td>
+                    <td>@User.DateOfBirth</td>
+                </tr>
+
+                <tr>
+                    <td>Active</td>
+                    <td>@User.IsActive</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <MudDivider Class="pb-4" />
+
+        <MudText>User Logs</MudText>
+        <div class="d-fl" style="max-height: 300px;">
+            <UserLogsGrid Class="stretch-table" GetUserLogsFunc="() => UserLogApi.GetUserLogsAsync(User.Id)" />
+        </div>
+
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Close">Close</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    private void Close() => MudDialog.Close();
+}

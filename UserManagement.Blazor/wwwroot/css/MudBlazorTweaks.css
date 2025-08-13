@@ -1,0 +1,54 @@
+﻿:root {
+    --mud-breakpoint-sm: 600px;
+    --mud-breakpoint-md: 960px;
+    --mud-breakpoint-lg: 1280px;
+    --mud-breakpoint-xl: 1920px;
+    --mud-breakpoint-xxl: 2560px;
+}
+
+.mud-expand-panel-content:empty {
+    padding-bottom: 0;
+}
+
+/*
+    Applies to MudTable and DataGrid.
+    Will allow the table to fill the vertical space available.
+*/
+.stretch-table {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    overflow: auto;
+}
+
+    .stretch-table.mud-table > .mud-table-container {
+        min-height: 0px;
+        flex-grow: 1;
+    }
+
+    .stretch-table .mud-table-pagination {
+        overflow: clip;
+    }
+
+.dialog-no-pad.mud-dialog .mud-dialog-content {
+    margin: 0;
+    padding: 0;
+}
+
+/* Remove padding from DataGrid group row */
+.group-no-pad .mud-datagrid-group {
+    display: table-cell !important;
+    padding: 0 !important;
+}
+
+/* This removes the ::before with content: data-label */
+@media (max-width: 600px) {
+    .group-no-pad.mud-xs-table .mud-table-cell:before {
+        content: none;
+    }
+}
+
+/* HACK to hide collpase option */
+.group-no-expander .mud-table-row-expander {
+    display: none;
+}

@@ -1,5 +1,7 @@
 # My Changes:
 
+#### Commit 145afc7597b33a7ab2711e7dcf80b186653b3265 Implement 6. CI pipeline for build + test
+
 #### PR #1 Added implementations for 1. Filter - IsActive and 2. User - DateOfBirth
 
 #### PR #2 Implements 3. Actions sections and Views.
@@ -12,6 +14,25 @@
 #### PR #4 Implements 5. Extend - Async Data
  - I added in Task based method where applicable to the `IDataContext` and`IUserService`.
  - I changed all applicable Controller actions to utilise Tasks and async.
+
+
+#### PR #5 Implements 5. Extend - Blazor UI, Web API
+ - Reimplemented functionality within a new Blazor WebAssembly Standalone application.
+ - Added API endpoints to existing Web project and utilised existing services.
+ - Created custom controls for re-usable content.
+
+
+#### What would I do next? (Excl. below Tasks)
+ - Expanded API, with pagination and filtering options.
+
+ 
+
+# How to run the Blazor app.
+
+Select the Startup Item of "Blazor + API", which will start the UserManagement.Blazor and UserManagement.Web projects, launching a browser window to the Blazor app.
+- You will need to use Chrome or Edge to debug the Blazor app, this is a limitation with Blazor Web Assembly.
+- You can alternatively run the Web project manually via CLI.
+- Ensure you use the launch settings for HTTPS, or update the `ApiHost` const within UserManagement.Blazor.Program to the correct URL
 
 ---
 

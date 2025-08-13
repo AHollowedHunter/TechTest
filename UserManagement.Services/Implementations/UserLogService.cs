@@ -14,14 +14,14 @@ public class UserLogService : IUserLogService
     public UserLogService(IDataContext dataAccess) => _dataAccess = dataAccess;
 
     public IEnumerable<UserLog> GetForUser(long userId)
-        => _dataAccess.GetAll<UserLog>().Where(l => l.UserId == userId);
+        => _dataAccess.GetAll<UserLog>().OrderByDescending(l => l.Timestamp).Where(l => l.UserId == userId);
 
     public async Task<IEnumerable<UserLog>> GetForUserAsync(long userId)
-        => await _dataAccess.GetAll<UserLog>().Where(l => l.UserId == userId).ToListAsync();
+        => await _dataAccess.GetAll<UserLog>().OrderByDescending(l => l.Timestamp).Where(l => l.UserId == userId).ToListAsync();
 
     public IEnumerable<UserLog> GetAll()
-        => _dataAccess.GetAll<UserLog>();
+        => _dataAccess.GetAll<UserLog>().OrderByDescending(l => l.Timestamp);
 
     public async Task<IEnumerable<UserLog>> GetAllAsync()
-        => await _dataAccess.GetAll<UserLog>().ToListAsync();
+        => await _dataAccess.GetAll<UserLog>().OrderByDescending(l => l.Timestamp).ToListAsync();
 }

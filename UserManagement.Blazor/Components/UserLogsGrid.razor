@@ -1,0 +1,35 @@
+﻿@using UserManagement.Models
+
+<MudDataGrid @ref="_userLogGrid" T="UserLog" ServerData="ServerReload" Class="@Class" FixedHeader Outlined SortMode="@SortMode">
+    <Columns>
+        <PropertyColumn Property="l => l.Id" />
+        <PropertyColumn Property="l => l.Timestamp" />
+        <PropertyColumn Property="l => l.UserId" />
+        <PropertyColumn Property="l => l.LogType" />
+    </Columns>
+</MudDataGrid>
+
+@code {
+    private MudDataGrid<UserLog> _userLogGrid = default!;
+
+    [Parameter, EditorRequired]
+    public Func<Task<List<UserLog>>> GetUserLogsFunc { get; set; }
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public SortMode SortMode { get; set; } = SortMode.None;
+
+    private async Task<GridData<UserLog>> ServerReload(GridState<UserLog> state)
+    {
+        var logs = await GetUserLogsFunc();
+
+        var logsArray = logs.ToArray();
+        return new GridData<UserLog>
+        {
+            TotalItems = logsArray.Length,
+            Items = logsArray,
+        };
+    }
+}
