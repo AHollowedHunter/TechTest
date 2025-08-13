@@ -66,6 +66,4 @@ public class UsersApiController : Controller
         await _userService.DeleteAsync(user);
         return NoContent();
     }
-
-    private RedirectToActionResult RedirectToViewUser(long id) => RedirectToAction("ViewUser", new { id });
 }

@@ -17,6 +17,15 @@
 
 
 #### PR #5 Implements 5. Extend - Blazor UI, Web API
+ - Reimplemented functionality within a new Blazor WebAssembly Standalone application.
+ - Added API endpoints to existing Web project and utilised existing services.
+ - Created custom controls for re-usable content.
+
+
+#### What would I do next? (Excl. below Tasks)
+ - Expanded API, with pagination and filtering options.
+
+ 
 
 # How to run the Blazor app.
 
