@@ -1,6 +1,6 @@
 # My Changes:
 
-#### Commit 145afc7597b33a7ab2711e7dcf80b186653b3265 Implement 6. CI pipeline for build + test
+#### Commit [145afc7](https://github.com/AHollowedHunter/TechTest/commit/145afc7597b33a7ab2711e7dcf80b186653b3265) Implement 6. CI pipeline for build + test
 
 #### PR #1 Added implementations for 1. Filter - IsActive and 2. User - DateOfBirth
 
