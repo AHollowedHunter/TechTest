@@ -20,7 +20,12 @@ public class Program
             .AddMudServices()
             .TryAddScoped<IThemeService, DefaultThemeService>();
 
-        builder.Services.AddHttpClient<UserApiClient>(client =>
+        builder.Services.AddHttpClient<IUserApiClient, UserApiClient>(client =>
+        {
+            client.BaseAddress = new($"{ApiHost}");
+        });
+
+        builder.Services.AddHttpClient<IUserLogApiClient, UserLogApiClient>(client =>
         {
             client.BaseAddress = new($"{ApiHost}");
         });

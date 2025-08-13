@@ -7,11 +7,11 @@ namespace UserManagement.WebMS.Controllers;
 
 [ApiController]
 [Route("api/users")]
-public class UsersAPIController : Controller
+public class UsersApiController : Controller
 {
     private readonly IUserService _userService;
 
-    public UsersAPIController(IUserService userService)
+    public UsersApiController(IUserService userService)
     {
         _userService = userService;
     }

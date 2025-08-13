@@ -1,11 +1,11 @@
 ﻿@page "/users"
 @using UserManagement.Models
 
-@inject UserApiClient UserApi
+@inject IUserApiClient UserApi
 @inject IDialogService DialogService
 @inject ISnackbar Snackbar
 
-<MudDataGrid @ref="_userGrid" T="User" ServerData="ServerReload">
+<MudDataGrid @ref="_userGrid" T="User" ServerData="ServerReload" Outlined>
     <ToolBarContent>
         <MudText Typo="Typo.h4">Users</MudText>
         <MudSpacer />
